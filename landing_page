@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title data-i18n="doc_title">กดกาชา ตอบคำถาม แล้วเจอเพื่อนร่วมทริปที่ใช่สำหรับคุณ | Seoul Daily-cation</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/neodunggeunmo@1.0.1/neodunggeunmo.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;700;900&family=Dancing+Script:wght@600&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- GTM (DO NOT REMOVE) -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&ldataLayer':'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-T2B49GNP');</script>
+
+<style>
+        :root {
+            --pink-main: #FBCFE8;
+            --pink-dark: #F9A8D4;
+            --pink-light: #FCE7F3;
+            --cream: #FFFBF0;
+            --bg-pink: #FAE1EC; 
+            --bg-blue: #E3F2FD;
+            --yellow: #FFF9C4;
+            --egg-blue: #A5D8FF;
+            --dreamy-sky: linear-gradient(180deg, #F3E5F5 0%, #E1BEE7 50%, #FCE4EC 100%);
+            
+            --current-theme-color: #A5D8FF;
+            --current-text-color: #FF69B4;
+
+            --card-width: 300px;   
+            --card-height: 430px;  
+        }
+
+        body {
+            font-family: 'Noto Sans Thai', 'NeoDunggeunmo', sans-serif;
+            background-color: var(--bg-pink);
+            color: #333;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+            overflow-wrap: break-word;
+        }
+
+        /* --- Background & Animations --- */
+        .bg-pixel-clouds {
+            background: var(--dreamy-sky);
+            position: relative;
+            overflow: hidden;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between; 
+            padding-top: 54px; 
+            padding-bottom: 2rem;
+        }
+
+        .huge-wheel-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150vw;
+            height: 150vw;
+            max-width: 1000px;
+            max-height: 1000px;
+            z-index: 0;
+            opacity: 0.35;
+            pointer-events: none;
+        }
+        .wheel-spin { width: 100%; height: 100%; animation: rotateWheel 120s linear infinite; }
+        @keyframes rotateWheel { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .moving-cloud {
+            position: absolute;
+            z-index: 1;
+            left: -250px;
+            animation: moveCloud linear infinite;
+            opacity: 0.45;
+            pointer-events: none;
+        }
+        @keyframes moveCloud { from { transform: translateX(0); } to { transform: translateX(calc(100vw + 500px)); } }
+
+        .hero-top-group {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 1rem;
+            z-index: 10;
+        }
+
+        .hero-center-group {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            flex-grow: 1;
+        }
+
+        .hero-bottom-group {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .gacha-container { 
+            position: relative; 
+            cursor: pointer; 
+            user-select: none; 
+            display: inline-block; 
+            transition: transform 0.2s; 
+            margin-top: 38px; 
+        }
+        .gacha-container:active { transform: scale(0.98); }
+        
+        .gacha-machine-svg { 
+            filter: drop-shadow(10px 10px 0px rgba(0,0,0,0.05)); 
+            animation: machineBounce 3s ease-in-out infinite; 
+            width: 280px; 
+            height: auto; 
+            position: relative; 
+            z-index: 11; 
+        }
+        @media (min-height: 750px) { .gacha-machine-svg { width: 310px; } }
+        @media (min-width: 768px) { .gacha-machine-svg { width: 350px; } }
+        
+        @keyframes machineBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        .lever-active #leverHandle { animation: rotateLever 0.6s ease-out; transform-origin: 200px 415px; }
+        @keyframes rotateLever { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .speech-bubble { 
+            background: #FF7555; 
+            border: 3px solid #EA501B; 
+            border-radius: 12px;
+            padding: 12px 24px; 
+            position: absolute; 
+            top: -30px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            animation: floatBubble 2s ease-in-out infinite; 
+            z-index: 20; 
+            white-space: nowrap; 
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.1); 
+            font-size: 1.35rem; 
+            font-weight: 900; 
+            color: #FFFFFF;
+        }
+        .speech-bubble::before {
+            content: ''; 
+            position: absolute; 
+            border-width: 15px 12px 0 12px; 
+            border-style: solid; 
+            border-color: #FF7555 transparent transparent transparent; 
+            bottom: -13px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            z-index: 2;
+        }
+        .speech-bubble::after { 
+            content: ''; 
+            position: absolute; 
+            border-width: 18px 15px 0 15px; 
+            border-style: solid; 
+            border-color: #EA501B transparent transparent transparent; 
+            bottom: -19px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            z-index: 1;
+        }
+        @keyframes floatBubble { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, -6px); } }
+
+        /* --- Capsule FX --- */
+        .capsule-drop-zone { position: absolute; top: 73%; left: 50%; transform: translateX(-50%); display: none; z-index: 2000; }
+        .capsule-active { display: block !important; animation: dropToCenterZoom 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        @keyframes dropToCenterZoom { 
+            0% { transform: translate(-50%, -20px) scale(0.1); opacity: 0; } 
+            15% { opacity: 1; transform: translate(-50%, 40px) scale(1) rotate(15deg); } 
+            100% { transform: translate(-50%, -25vh) scale(1.5); } 
+        }
+        .capsule-top-half { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: center; }
+        .capsule-open .capsule-top-half { transform: translateY(-40px) rotate(25deg) scale(1.1); }
+        .capsule-open #openingCapsule { opacity: 0; transition: opacity 0.3s ease-in; transition-delay: 0.1s; } 
+        .capsule-glow { position: absolute; top: 50%; left: 50%; width: 120px; height: 120px; background: radial-gradient(circle, #FFFFFF 0%, #FFF9C4 30%, rgba(255,255,255,0) 70%); transform: translate(-50%, -50%) scale(0); border-radius: 50%; z-index: 10; opacity: 0; pointer-events: none; mix-blend-mode: overlay; }
+        .capsule-open .capsule-glow { animation: capsuleBurst 0.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; }
+        @keyframes capsuleBurst { 0% { transform: translate(-50%, -50%) scale(0.1); opacity: 1; } 40% { transform: translate(-50%, -50%) scale(10); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(15); opacity: 0; } }
+
+        /* --- UI & Typography --- */
+        .bubble-logo-container { 
+            position: relative; 
+            display: inline-block; 
+            padding: 15px; 
+            z-index: 10; 
+            width: 100%; 
+            max-width: 460px; 
+            margin-top: 1rem;
+        }
+        .bubble-title { 
+            position: relative; 
+            font-family: 'Noto Sans Thai', 'NeoDunggeunmo', sans-serif; 
+            font-weight: 900; 
+            /* 현재 기준에서 1.3배 더 크게 상향 조정 (clamp 최소/가변/최대 값 모두 1.3배 적용) */
+            font-size: clamp(1.6rem, 8.1vw, 2.2rem); 
+            line-height: 1.35; 
+            text-align: center; 
+            color: #FF8EC7; 
+            -webkit-text-stroke: 3px white; 
+            paint-order: stroke fill markers;
+            filter: drop-shadow(3px 5px 0 #8AB8FF);
+            /* 어떠한 기기에서도 강제로 지정한 3줄 외의 줄바꿈을 차단 */
+            white-space: nowrap; 
+        }
+        .bubble-title span {
+            background: linear-gradient(to bottom, #FFD5E5 10%, #FF8EC7 90%);
+            
+            /* 표준 속성 */
+            background-clip: text;
+
+            /* 브라우저 호환용 */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            
+            display: inline-block;
+            position: relative;
+            z-index: 2;
+        }
+        /* PC 환경에서도 기존 3rem에서 1.3배 키운 3.9rem 적용 */
+        @media (min-width: 768px) { 
+            .bubble-title { font-size: 3.9rem; -webkit-text-stroke: 6px white; filter: drop-shadow(4px 8px 0 #8AB8FF); } 
+            .bubble-logo-container { max-width: 900px; } 
+        }
+
+        #eggLoadingOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 4000; display: none; justify-content: center; align-items: center; flex-direction: column; }
+        .egg-wrapper { position: relative; width: 150px; height: 260px; }
+        .egg-shaking { animation: eggShake 0.4s infinite ease-in-out; }
+        @keyframes eggShake { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-4deg) translateX(-2px); } 75% { transform: rotate(4deg) translateX(2px); } }
+        .egg-shell-top, .egg-shell-bottom { transition: transform 1.5s cubic-bezier(0.5, 0, 0.5, 1), opacity 1s ease-in; transform-origin: 50px 75px; }
+        #eggShellTopPath, #eggShellBottomPath, #eggBase { fill: var(--current-theme-color); transition: fill 0.5s ease; }
+        .crack-line { stroke: #000; stroke-width: 2.5; fill: none; opacity: 0; transition: opacity 0.3s ease; stroke-linecap: round; stroke-linejoin: round; }
+        .crack-visible { opacity: 1; filter: drop-shadow(0px 0px 4px rgba(255,255,255,0.9)); }
+        #eggBase { opacity: 1; transition: opacity 0.2s ease; }
+        .egg-broken #eggBase { opacity: 0; }
+        .egg-broken .crack-line { opacity: 0 !important; }
+        .egg-broken .egg-shell-top { transform: translateY(-300px) rotate(-15deg); opacity: 0; }
+        .egg-broken .egg-shell-bottom { transform: translateY(300px) rotate(15deg); opacity: 0; }
+
+        #find { padding: 0 !important; min-height: 100vh; overflow: hidden; display: flex; flex-direction: column; align-items: center; }
+        .id-card-viewport { width: 100%; display: flex; justify-content: center; padding: 5px 0; perspective: 1200px; margin-top: 5px; }
+        .id-card-flipper { width: var(--card-width); height: var(--card-height); position: relative; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; cursor: pointer; }
+        @media (max-width: 480px) { :root { --card-width: 260px; --card-height: 373px; } }
+        .id-card-flipper.is-flipped { transform: rotateY(180deg); }
+        .id-card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; background: transparent; }
+        .id-card-back { transform: rotateY(180deg); }
+        .card-image { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+        .btn-save-result { background: var(--current-text-color); border-radius: 50px; color: white; padding: 16px 30px; font-size: 1.1rem; font-weight: 900; text-transform: uppercase; width: 100%; max-width: 300px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 1.2rem; transition: all 0.2s; }
+        .share-group-title { width: 100%; text-align: center; margin: 5px 0 12px; color: var(--current-text-color); font-weight: bold; font-size: 0.75rem; opacity: 0.7; }
+        .share-icon-list { display: flex; justify-content: center; gap: 18px; width: 100%; margin-bottom: 1.2rem; }
+        .share-icon-btn { width: 50px; height: 50px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--current-text-color); color: var(--current-text-color); }
+        .btn-retry, .btn-explore { background: transparent; border: none; color: var(--current-text-color); font-weight: 800; font-size: 0.8rem; margin-top: 0.5rem; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; padding: 10px; text-transform: uppercase; display: inline-block; text-align: center; }
+        .card-flip-hint { margin-top: 8px; font-size: 0.7rem; font-weight: 900; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 6px; animation: hintBounce 2s infinite; color: var(--current-text-color); opacity: 0.9; }
+        @keyframes hintBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+        .sticky-header { position: fixed; top: 0; width: 100%; z-index: 1000; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border-bottom: 2px solid #E23C9A; height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; }
+        .nav-link { font-size: 0.62rem; font-weight: 900; padding: 4px 6px; border: 1.5px solid transparent; transition: all 0.2s; cursor: pointer; text-transform: uppercase; color: #E23C9A; white-space: nowrap; }
+        @media (min-width: 380px) { .nav-link { font-size: 0.68rem; padding: 4px 8px; } }
+        @media (min-width: 768px) { .nav-link { font-size: 0.85rem; padding: 6px 14px; border-width: 2px; } }
+
+        #quizOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2500; display: none; justify-content: center; align-items: center; padding: 15px; }
+        .quiz-card { background: white; border: 4px solid black; box-shadow: 10px 10px 0px var(--pink-main); max-width: 420px; width: 100%; padding: 1.5rem; position: relative; }
+        .progress-bar { height: 14px; background: #f0f0f0; border: 3px solid black; margin-bottom: 25px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--pink-main); width: 0%; transition: width 0.3s ease; }
+        .quiz-btn { background: #FFFAC3; border: 3px solid black; box-shadow: 4px 4px 0px black; padding: 14px 16px; width: 100%; text-align: left; font-weight: bold; font-size: 0.9rem; color: black; display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; line-height: 1.5; word-break: keep-all; }
+        .quiz-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px black; }
+        .final-action-btn { background: #FFB7D5; border: 4px solid black; box-shadow: 4px 4px 0px black; padding: 16px 20px; width: 100%; font-weight: 900; font-size: 1rem; color: black; text-align: center; display: none; margin-top: 20px; cursor: pointer; word-break: keep-all; justify-content: center; align-items: center; }
+    </style>
+</head>
+<body>
+
+    <!-- GTM Noscript (DO NOT REMOVE) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T2B49GNP"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <div id="msgBox" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border: 4px solid black; padding: 25px; z-index: 6000; display: none; flex-direction: column; align-items: center; gap: 15px; box-shadow: 12px 12px 0px rgba(0,0,0,0.2); width: 85%; max-width: 320px;">
+        <p id="msgContent" class="text-center font-bold text-base text-balance"></p>
+        <button class="pixel-btn bg-pink-100 font-bold px-4 py-2 border-2 border-black" onclick="document.getElementById('msgBox').style.display='none'" data-i18n="msg_ok">OK</button>
+    </div>
+
+    <div id="eggLoadingOverlay">
+        <div class="egg-wrapper" id="eggWrapper">
+            <svg class="egg-svg" viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
+                <defs><pattern id="starPatternEgg" x="0" y="0" width="25" height="25" patternUnits="userSpaceOnUse"><path d="M12.5 4 l 3 9 h 9 l -7 6 l 3 9 l -8 -6 l -8 6 l 3 -9 l -7 -6 h 9 Z" fill="rgba(0,0,0,0.05)"/></pattern></defs>
+                <g id="fullEggGroup">
+                    <path id="eggBase" d="M10 75 C 10 5, 90 5, 90 75 C 90 145, 10 145, 10 75 Z" fill="var(--egg-blue)" stroke="black" stroke-width="3" />
+                    <g class="egg-shell-bottom">
+                        <path id="eggShellBottomPath" d="M10 75 C 10 145, 90 145, 90 75 Z" fill="var(--egg-blue)"/>
+                        <path d="M10 75 C 10 145, 90 145, 90 75 Z" fill="url(#starPatternEgg)"/>
+                        <path d="M10 75 C 10 145, 90 145, 90 75" fill="none" stroke="black" stroke-width="3"/>
+                    </g>
+                    <g class="egg-shell-top">
+                        <path id="eggShellTopPath" d="M10 75 C 10 5, 90 5, 90 75 Z" fill="var(--egg-blue)"/>
+                        <path d="M10 75 C 10 5, 90 5, 90 75 Z" fill="url(#starPatternEgg)"/>
+                        <path d="M10 75 C 10 5, 90 5, 90 75" fill="none" stroke="black" stroke-width="3"/>
+                    </g>
+                    <path class="crack-line" id="crack1" d="M50 75 l -15 -8 l 10 -15"/><path class="crack-line" id="crack2" d="M50 75 l 20 10 l -8 15"/><path class="crack-line" id="crack3" d="M35 67 l -12 5"/><path class="crack-line" id="crack4" d="M70 85 l 15 -6"/><path class="crack-line" id="crack5" d="M50 52 l 10 -12"/>
+                </g>
+            </svg>
+        </div>
+        <p class="text-white mt-10 text-lg md:text-xl tracking-tight animate-pulse text-center px-6" data-i18n="quiz_hatching">โอ๊ะ! เพื่อนเที่ยวของคุณ<br>กำลังจะฟักออกมาแล้ว!</p>
+    </div>
+
+    <header class="sticky-header text-[#E23C9A]">
+        <div class="flex items-center gap-1.5 cursor-pointer" onclick="scrollToSection('hero')">
+            <img src="Secretmate.png" alt="Logo" class="h-8 w-8 md:h-12 md:w-12 object-contain" onerror="this.src='https://placehold.co/100x100/FF69B4/FFFFFF?text=SM'">
+            <span class="text-[10px] md:text-sm font-black tracking-tight uppercase">Secret mate</span>
+        </div>
+        <nav class="flex items-center gap-0.5 sm:gap-1.5">
+            <a onclick="scrollToSection('hero')" class="nav-link" data-i18n="nav_start">เริ่มเลย</a>
+            <a onclick="scrollToSection('how-to')" class="nav-link" data-i18n="nav_how">วิธีใช้</a>
+            <a onclick="scrollToSection('find')" class="nav-link" data-i18n="nav_id">บัตรประจำตัว</a>
+            <a onclick="scrollToSection('about')" class="nav-link" data-i18n="nav_about">เกี่ยวกับเรา</a>
+        </nav>
+    </header>
+
+    <section id="hero" class="bg-pixel-clouds">
+        <!-- Background elements -->
+        <svg class="moving-cloud" style="top: 5%; width: 70px; animation-duration: 30s; animation-delay: 0s;" viewBox="0 0 100 50"><path fill="white" d="M 25 40 C 5 40, 5 15, 25 15 C 30 0, 60 0, 65 15 C 85 15, 85 40, 65 40 Z" /></svg>
+        <svg class="moving-cloud" style="top: 25%; width: 110px; animation-duration: 45s; animation-delay: -3s;" viewBox="0 0 100 50"><path fill="white" d="M 25 40 C 5 40, 5 15, 25 15 C 30 0, 60 0, 65 15 C 85 15, 85 40, 65 40 Z" /></svg>
+        <svg class="moving-cloud" style="top: 65%; width: 125px; animation-duration: 48s; animation-delay: -15s;" viewBox="0 0 100 50"><path fill="white" d="M 25 40 C 5 40, 5 15, 25 15 C 30 0, 60 0, 65 15 C 85 15, 85 40, 65 40 Z" /></svg>
+
+        <div class="huge-wheel-container">
+            <div class="wheel-spin">
+                <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: visible; width: 100%; height: 100%;">
+                    <circle cx="60" cy="60" r="55" fill="none" stroke="white" stroke-width="0.5" opacity="0.3"/>
+                    <g stroke="white" stroke-width="0.3" opacity="0.2">
+                        <!-- Cross lines -->
+                        <line x1="60" y1="60" x2="60" y2="5"/><line x1="60" y1="60" x2="60" y2="115"/>
+                        <line x1="60" y1="60" x2="5" y2="60"/><line x1="60" y1="60" x2="115" y2="60"/>
+                        <!-- Diagonal lines -->
+                        <line x1="60" y1="60" x2="21.1" y2="21.1"/><line x1="60" y1="60" x2="98.9" y2="98.9"/>
+                        <line x1="60" y1="60" x2="21.1" y2="98.9"/><line x1="60" y1="60" x2="98.9" y2="21.1"/>
+                    </g>
+                    <defs>
+                        <!-- Perfected Star Polygon -->
+                        <polygon id="starFinal" points="0,-4 1.2,-1.2 4,-1.2 1.6,1.2 2.8,4 0,2.4 -2.8,4 -1.6,1.2 -4,-1.2 -1.2,-1.2" />
+                    </defs>
+                    <!-- Using both href and xlink:href for maximum mobile browser compatibility -->
+                    <use xlink:href="#starFinal" href="#starFinal" x="60" y="5" fill="#FFD700"/>
+                    <use xlink:href="#starFinal" href="#starFinal" x="60" y="115" fill="#F9A8D4"/>
+                    <use xlink:href="#starFinal" href="#starFinal" x="5" y="60" fill="#A5D8FF"/>
+                    <use xlink:href="#starFinal" href="#starFinal" x="115" y="60" fill="#B2DFDB"/>
+                    
+                    <use xlink:href="#starFinal" href="#starFinal" x="21.1" y="21.1" fill="#F9A8D4"/>
+                    <use xlink:href="#starFinal" href="#starFinal" x="98.9" y="98.9" fill="#FFD700"/>
+                    <use xlink:href="#starFinal" href="#starFinal" x="21.1" y="98.9" fill="#B2DFDB"/>
+                    <use xlink:href="#starFinal" href="#starFinal" x="98.9" y="21.1" fill="#A5D8FF"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="hero-top-group">
+            <div class="bubble-logo-container">
+                <h1 class="bubble-title leading-tight" data-i18n="hero_title"><span>กดกาชา ตอบคำถาม<br>แล้วเจอเพื่อนร่วมทริปที่ใช่<br>สำหรับคุณ!</span></h1>
+            </div>
+        </div>
+
+        <div class="hero-center-group">
+            <div id="gachaArea" class="gacha-container" onclick="startGacha()">
+                <div class="speech-bubble font-bold text-white" data-i18n="hero_speech">เริ่มตรงนี้! (คลิก)</div>
+                <svg class="gacha-machine-svg" viewBox="0 0 400 650" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="200" cy="230" r="145" fill="white" stroke="black" stroke-width="4"/><g id="capsuleContainer"></g><g id="machineBody"><path d="M80 340 L 320 340 L 340 540 L 60 540 Z" fill="var(--pink-main)" stroke="black" stroke-width="4"/><rect x="60" y="530" width="280" height="20" rx="10" fill="var(--cream)" stroke="black" stroke-width="4"/><circle cx="200" cy="415" r="48" fill="var(--cream)" stroke="black" stroke-width="4"/><g id="leverHandle"><rect x="175" y="405" width="50" height="20" rx="10" fill="var(--pink-main)" stroke="black" stroke-width="3"/><circle cx="200" cy="415" r="8" fill="white" stroke="black" stroke-width="2"/></g><rect x="160" y="475" width="80" height="65" rx="15" fill="var(--pink-dark)" stroke="black" stroke-width="3" id="exitHole"/></g><g transform="translate(0, 20)"><path d="M100 100 Q 200 5 300 100 Z" fill="var(--pink-main)" stroke="black" stroke-width="4"/><rect x="90" y="95" width="220" height="18" rx="9" fill="var(--cream)" stroke="black" stroke-width="4"/><path d="M200 35 C 195 25, 185 25, 185 35 C 185 45, 200 55, 200 55 C 200 55, 215 45, 215 35 C 215 25, 205 25, 200 35 Z" fill="#FF8EC7" stroke="black" stroke-width="2"/></g>
+                </svg>
+                <div id="fallingCapsule" class="capsule-drop-zone"><div class="capsule-glow"></div><svg id="openingCapsule" width="85" height="85" viewBox="0 0 100 100"><g><path d="M20 50 A 30 30 0 0 0 80 50 Z" fill="var(--yellow)" stroke="black" stroke-width="4"/><path d="M20 50 A 30 30 0 0 1 80 50 Z" class="capsule-top-half" fill="white" stroke="black" stroke-width="4"/></g></svg></div>
+            </div>
+        </div>
+
+        <div class="hero-bottom-group">
+            <p class="text-[13px] md:text-base opacity-60 text-black font-bold" data-i18n="hero_desc">คลิกเพื่อพบกับเพื่อนเที่ยวของคุณ!</p>
+        </div>
+    </section>
+
+    <section id="how-to" style="background-color: #FAE1EC; min-height: auto;" class="relative z-10 py-16">
+        <div class="max-w-md mx-auto px-6 text-center w-full">
+            <div class="inline-block bg-white border-4 border-black px-4 py-2 font-bold text-lg mb-8 shadow-[4px_4px_0px_black]" data-i18n="how_title">วิธีใช้งาน</div>
+            <div class="grid grid-cols-1 gap-6 text-left">
+                <div class="bg-white border-4 border-black p-4 flex items-center gap-4">
+                    <div class="bg-yellow-200 border-2 border-black w-10 h-10 flex items-center justify-center font-black flex-shrink-0">1</div>
+                    <p class="text-sm font-bold" data-i18n="how_1">คลิกที่ตู้กาชาปองด้านบนแล้วดึงคันโยก!</p>
+                </div>
+                <div class="bg-white border-4 border-black p-4 flex items-center gap-4">
+                    <div class="bg-pink-200 border-2 border-black w-10 h-10 flex items-center justify-center font-black flex-shrink-0">2</div>
+                    <p class="text-sm font-bold" data-i18n="how_2">ตอบคำถาม 3 ข้อเพื่อค้นหาสไตล์การเที่ยวของคุณ</p>
+                </div>
+                <div class="bg-white border-4 border-black p-4 flex items-center gap-4">
+                    <div class="bg-blue-200 border-2 border-black w-10 h-10 flex items-center justify-center font-black flex-shrink-0">3</div>
+                    <p class="text-sm font-bold" data-i18n="how_3">ฟักไข่และพบกับเพื่อนเที่ยวเกาหลีในแบบของคุณ!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="find" style="background-color: #FAE1EC; display: none;" class="relative z-10">
+        <div id="resultContent" class="w-full max-w-lg px-4 flex flex-col items-center py-5">
+            <div id="resultMessageArea" class="w-full text-center mb-2"></div>
+            <div class="id-card-viewport">
+                <div class="id-card-flipper" id="idCardFlipper" onclick="this.classList.toggle('is-flipped')">
+                    <div class="id-card-face id-card-front" id="idCardFront"><img src="" alt="Front" class="card-image" id="idFrontImg"></div>
+                    <div class="id-card-face id-card-back" id="idCardBack"><img src="" alt="Back" class="card-image" id="idBackImg"></div>
+                </div>
+            </div>
+            <div class="card-flip-hint" data-i18n="res_flip_hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg><span>คลิกที่บัตรเพื่อพลิกดู!</span></div>
+            <div class="flex flex-col items-center w-full mt-4">
+                <button id="dynamicSaveBtn" class="btn-save-result" onclick="saveCardAsImage()" data-i18n="res_save">บันทึกรูปภาพ</button>
+                <div id="dynamicShareTitle" class="share-group-title"><span data-i18n="res_share">แชร์กับเพื่อน</span></div>
+                <div class="share-icon-list">
+                    <button class="share-icon-btn" onclick="shareX()"><svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></button>
+                    <button class="share-icon-btn" onclick="shareInstagram()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></button>
+                    <button class="share-icon-btn" onclick="copyLink()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></button>
+                </div>
+                <a id="dynamicExploreBtn" href="https://korean.visitseoul.net/editorspicks" target="_blank" class="btn-explore" data-i18n="res_explore">สำรวจที่เที่ยวในโซลเพิ่มเติม</a>
+                <button onclick="location.reload()" class="btn-retry" data-i18n="res_retry">ลองอีกครั้ง</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 복원된 About Section -->
+    <section id="about" style="background-color: #FAE1EC; min-height: auto;" class="relative z-10 py-16 md:py-20 overflow-hidden">
+        <div class="max-w-6xl mx-auto px-5 md:px-12">
+            <div class="flex flex-col lg:flex-row items-center gap-10">
+                <div class="w-full lg:w-1/2 text-left">
+                    <div class="inline-block bg-white border-[3px] border-black px-3 py-1.5 font-bold text-sm mb-4 shadow-[3px_3px_0px_black]" data-i18n="about_label">เกี่ยวกับเรา</div>
+                    <h2 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight mb-6 tracking-tight text-black" style="font-family: 'NeoDunggeunmo', sans-serif;">
+                        <span data-i18n="about_h2_1">ทริปที่สมบูรณ์แบบ<br></span>
+                        <span style="color: #E23C9A;" data-i18n="about_h2_2">เริ่มต้นที่นี่</span>
+                    </h2>
+                    <div class="bg-white border-[3px] border-black p-5 shadow-[5px_5px_0px_var(--pink-dark)]">
+                        <p class="text-black leading-relaxed text-sm md:text-base font-bold" data-i18n="about_desc">เราเชื่อว่า 'รสนิยม' ของคุณ คือเข็มทิศนำทางที่ดีที่สุดในการเดินทาง แทนที่จะใช้หนังสือนำเที่ยวที่ซับซ้อน เพื่อนเที่ยวที่ฟักออกมาจากตัวเลือกของคุณ จะช่วยออกแบบวันพักผ่อนในเกาหลีที่สมบูรณ์แบบที่สุด ไม่ว่าคุณจะชอบ K-Food, K-Beauty หรือ K-Trend เราพร้อมให้คุณสัมผัสความงามที่แท้จริง의 โซล</p>
+                    </div>
+                </div>
+                <div class="hidden lg:block lg:w-1/2 relative">
+                    <div class="w-64 h-64 bg-white border-4 border-black rotate-3 absolute -top-10 -right-10 opacity-20"></div>
+                </div>
+            </div>
+        </div>
+        <div class="w-full text-center mt-16 mb-4">
+            <p class="text-xs opacity-60 font-bold text-black" data-i18n="footer">© 2026 Seoul Daily-cation. สงวนลิขสิทธิ์</p>
+        </div>
+    </section>
+
+    <div id="quizOverlay">
+        <div class="quiz-card">
+            <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+            <p id="questionCount" class="text-[11px] mb-3 opacity-60 font-bold uppercase tracking-wider">Question 1 / 3</p>
+            <h2 id="questionText" class="text-xl md:text-2xl font-bold mb-8 text-black leading-snug"></h2>
+            <div class="flex flex-col gap-3" id="quizOptions"></div>
+            <button id="finalActionBtn" class="final-action-btn" data-i18n="quiz_meet">ไปพบเพื่อนเที่ยวของคุณกันเลย ✨</button>
+        </div>
+    </div>
+
+    <script>
+        const i18nData = {
+            th: {
+                doc_title: "กดกาชา ตอบคำถาม แล้วเจอเพื่อนร่วมทริปที่ใช่สำหรับคุณ | Seoul Daily-cation",
+                nav_start: "เริ่มเลย", nav_how: "วิธีใช้", nav_id: "บัตรประจำตัว", nav_about: "เกี่ยวกับเรา",
+                hero_title: "กดกาชา ตอบคำถาม<br>แล้วเจอเพื่อนร่วมทริปที่ใช่<br>สำหรับคุณ!",
+                hero_speech: "เริ่มตรงนี้! (คลิก)", hero_desc: "คลิกเพื่อพบกับเพื่อนเที่ยวของคุณ!",
+                how_title: "วิธีใช้งาน", how_1: "คลิกที่ตู้กาชาปองด้านบนแล้วดึงคันโยก!", how_2: "ตอบคำถาม 3 ข้อเพื่อค้นหาสไตล์การเที่ยวของคุณ", how_3: "ฟักไข่และพบกับเพื่อนเที่ยวเกาหลีในแบบของคุณ!",
+                about_label: "เกี่ยวกับเรา", about_h2_1: "ทริปที่สมบูรณ์แบบ<br>", about_h2_2: "เริ่มต้นที่นี่", 
+                about_desc: "เราเชื่อว่า 'รสนิยม' ของคุณ คือเข็มทิศนำทางที่ดีที่สุดในการเดินทาง แทนที่จะใช้หนังสือนำเที่ยวที่ซับซ้อน เพื่อนเที่ยวที่ฟักออกมาจากตัวเลือกของคุณ จะช่วยออกแบบวันพักผ่อนในเกาหลีที่สมบูรณ์แบบที่สุด ไม่ว่าคุณจะชอบ K-Food, K-Beauty หรือ K-Trend เราพร้อมให้คุณสัมผัสความงามที่แท้จริงของโซล",
+                footer: "© 2026 Seoul Daily-cation. สงวนลิขสิทธิ์",
+                quiz_hatching: "โอ๊ะ! เพื่อนเที่ยวของคุณ<br>กำลังจะฟักออกมาแล้ว!", quiz_meet: "ไปพบเพื่อนเที่ยวของคุณกันเลย ✨", quiz_complete: "วิเคราะห์เสร็จสมบูรณ์!",
+                res_save: "บันทึกรูปภาพ", res_share: "แชร์กับเพื่อน", res_explore: "สำรวจที่เที่ยวในโซลเพิ่มเติม", res_retry: "ลองอีกครั้ง", res_placeholder: "หมุนกาชาเพื่อค้นหาเพื่อนเที่ยวของคุณ!",
+                res_flip_hint: "คลิกที่บัตรเพื่อพลิกดู!",
+                msg_saving: "กำลังบันทึกรูปภาพ...", msg_success: "บันทึกสำเร็จ!", msg_error: "เกิดข้อผิดพลาด", msg_insta: "บันทึกรูปภาพแล้วแชร์ลง<br>Instagram เลย! 📸", msg_link: "คัดลอกลิงก์สำเร็จ! 🔗", msg_ok: "ตกลง",
+                type_a: "อยากไปลุยร้านอาหาร<br>ท้องถิ่นกับคุณ!", type_b: "อยากไปทำ Personal Color<br>เป็นเพื่อนคุณ!", type_c: "อยากไปตะลุยที่ฮิต ๆ<br>กับคุณ!",
+                q_prefix: "คำถามที่"
+            }
+        };
+
+        const questionsDict = {
+            th: [
+                { 
+                  q: "วันนี้ได้หยุดทั้งวัน! ✨<br>ถ้าเป็นคุณ จะใช้เวลา 1 วัน<br>ในเกาหลียังไงดี?", 
+                  a: "“วันนี้ขอกินทุกอย่าง<br>ที่อยากกินให้เต็มที่เลย!!” 🍗", 
+                  b: "“ขอแต่งหน้าแต่งตัว<br>ให้ปังสุด ๆ สักวัน!” 💄", 
+                  c: "“ต้องไปให้ครบทั้งที่ฮิต ๆ<br>และที่กำลังเป็นเทรนด์!” 📸",
+                  weight: 5
+                },
+                { 
+                  q: "เที่ยวอยู่ดี ๆ แต่มีเวลาว่าง<br>เพิ่มขึ้นมา 👀<br>แบบนี้คุณจะไปที่ไหนต่อดี?", 
+                  a: "“ไปหาของกินใกล้ ๆ<br>หรือแวะร้านสะดวกซื้อดีกว่า~” 🍙", 
+                  b: "“ลองทำเมคอัพหรือเช็ก<br>Personal Color ก็น่าสนุกนะ!” 🎨", 
+                  c: "“ต้องไปหาพวกร้านป๊อปอัพ<br>หรือคาเฟ่เก๋ ๆ ก่อนเลย!” ☕",
+                  weight: 3
+                },
+                { 
+                  q: "ทริปเกาหลีครั้งนี้! ถ้าย้อนกลับมา<br>ดูรูปทีหลัง<br>คิดว่ารูปแบบไหนจะเยอะที่สุด?", 
+                  a: "รูปอาหารที่อยากกินอีกครั้ง!", 
+                  b: "เซลฟี่วันที่แต่งหน้าสวยเป๊ะ!", 
+                  c: "รูปกับวิดีโอสายคาเฟ่<br>หรือสถานที่ยอดฮิต!",
+                  weight: 2
+                }
+            ]
+        };
+
+        let currentLang = 'th';
+        function setLang(lang) {
+            currentLang = lang; document.documentElement.lang = lang;
+            const t = i18nData[lang]; 
+            if (!t) return;
+            document.title = t.doc_title;
+            document.querySelectorAll('[data-i18n]').forEach(el => { el.innerHTML = t[el.getAttribute('data-i18n')]; });
+            if (quizOverlay.style.display === 'flex') renderQuiz();
+            if (document.getElementById('resultContent').style.display === 'flex') updateResultText();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { 
+            setLang(currentLang); 
+            initMachineCapsules(); 
+            updateMachineCapsules(); 
+        });
+
+        function scrollToSection(id) {
+            const section = document.getElementById(id);
+            if (section) {
+                if (window.getComputedStyle(section).display === 'none') {
+                    if (id === 'find') showMsg(i18nData[currentLang].res_placeholder);
+                    return;
+                }
+                const headerOffset = window.innerWidth < 768 ? 54 : 68;
+                const elementPosition = section.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+            }
+        }
+
+        const capsuleContainer = document.getElementById('capsuleContainer');
+        const capsules = [];
+        const capsuleColors = ['#D1C4E9', '#B2DFDB', '#FFF9C4', '#F8BBD0', '#BBDEFB', '#FFCCBC'];
+        
+        function initMachineCapsules() {
+            capsuleContainer.innerHTML = '';
+            capsules.length = 0; 
+            for (let i = 0; i < 18; i++) {
+                const angle = Math.random() * Math.PI * 2, dist = Math.random() * 110;
+                const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                const base = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                base.setAttribute("r", "26"); base.setAttribute("fill", capsuleColors[i % capsuleColors.length]); base.setAttribute("stroke", "black"); base.setAttribute("stroke-width", "2");
+                const topCap = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                topCap.setAttribute("d", "M -26 0 A 26 26 0 0 1 26 0 Z"); topCap.setAttribute("fill", "rgba(255,255,255,0.6)"); topCap.setAttribute("stroke", "black");
+                group.appendChild(base); group.appendChild(topCap); capsuleContainer.appendChild(group);
+                capsules.push({ element: group, x: 200 + Math.cos(angle) * dist, y: 230 + Math.sin(angle) * dist, vx: (Math.random()-0.5)*5, vy: (Math.random()-0.5)*5, rot: Math.random()*360, vr: (Math.random()-0.5)*3 });
+            }
+        }
+
+        function updateMachineCapsules() {
+            capsules.forEach(c => {
+                c.x += c.vx; c.y += c.vy; c.rot += c.vr;
+                const dx = c.x - 200, dy = c.y - 230, dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist + 26 > 140) {
+                    const nx = dx / dist, ny = dy / dist, dot = c.vx * nx + c.vy * ny;
+                    c.vx = (c.vx - 2 * dot * nx) * 0.8; c.vy = (c.vy - 2 * dot * ny) * 0.8;
+                    const overlap = dist + 26 - 140; c.x -= nx * overlap; c.y -= ny * overlap;
+                }
+                c.element.setAttribute("transform", `translate(${c.x}, ${c.y}) rotate(${c.rot})`);
+            });
+            requestAnimationFrame(updateMachineCapsules);
+        }
+
+        let currentIdx = 0;
+        let weightedScores = { A: 0, B: 0, C: 0 };
+        const quizOverlay = document.getElementById('quizOverlay'), quizOptions = document.getElementById('quizOptions');
+        const finalActionBtn = document.getElementById('finalActionBtn'), eggLoadingOverlay = document.getElementById('eggLoadingOverlay');
+        const fallingCapsule = document.getElementById('fallingCapsule');
+
+        async function startGacha() {
+            if (currentIdx > 0) return;
+            document.getElementById('hero').classList.add('lever-active');
+            capsules.forEach(c => { c.vx *= 15; c.vy *= 15; });
+            await new Promise(r => setTimeout(r, 600));
+            fallingCapsule.classList.add('capsule-active');
+            await new Promise(r => setTimeout(r, 2200));
+            fallingCapsule.classList.add('capsule-open');
+            await new Promise(r => setTimeout(r, 250)); 
+            quizOverlay.style.display = 'flex'; 
+            renderQuiz(); 
+            document.getElementById('hero').classList.remove('lever-active');
+            setTimeout(() => { fallingCapsule.classList.remove('capsule-active', 'capsule-open'); }, 600);
+        }
+
+        function renderQuiz() {
+            const qs = questionsDict[currentLang], t = i18nData[currentLang];
+            const qTextEl = document.getElementById('questionText');
+            if (currentIdx < qs.length) {
+                const q = qs[currentIdx];
+                qTextEl.innerHTML = q.q; 
+                qTextEl.classList.remove('text-center');
+                document.getElementById('questionCount').style.display = 'block';
+                document.getElementById('questionCount').innerText = `${t.q_prefix} ${currentIdx + 1} / ${qs.length}`;
+                document.getElementById('progressFill').style.width = `${((currentIdx + 1) / qs.length) * 100}%`;
+                quizOptions.innerHTML = `
+                    <button class="quiz-btn" onclick="handleAnswer('A')"><span class="shrink-0">A.</span> <span>${q.a}</span></button>
+                    <button class="quiz-btn" onclick="handleAnswer('B')"><span class="shrink-0">B.</span> <span>${q.b}</span></button>
+                    <button class="quiz-btn" onclick="handleAnswer('C')"><span class="shrink-0">C.</span> <span>${q.c}</span></button>
+                `;
+            } else {
+                qTextEl.innerHTML = t.quiz_complete;
+                qTextEl.classList.add('text-center'); 
+                document.getElementById('questionCount').style.display = 'none';
+                document.getElementById('progressFill').style.width = '100%';
+                quizOptions.innerHTML = ""; finalActionBtn.style.display = 'flex';
+            }
+        }
+
+        window.handleAnswer = (type) => { 
+            const weight = questionsDict[currentLang][currentIdx].weight;
+            weightedScores[type] += weight;
+            currentIdx++; 
+            renderQuiz(); 
+        };
+
+        let finalTypeResult = 'A';
+        finalActionBtn.addEventListener('click', async () => {
+            try {
+                if (!sessionStorage.getItem('tt_conversion_submitted')) {
+                    window.dataLayer = window.dataLayer || [];
+                    window.dataLayer.push({
+                        'event': 'SubmitForm',
+                        'conversion_type': 'travel_mate_test'
+                    });
+                    sessionStorage.setItem('tt_conversion_submitted', 'true');
+                }
+            } catch (e) {}
+
+            let maxType = 'A';
+            if (weightedScores.B >= weightedScores.A && weightedScores.B >= weightedScores.C) maxType = 'B';
+            else if (weightedScores.C >= weightedScores.A && weightedScores.C >= weightedScores.B) maxType = 'C';
+            
+            finalTypeResult = maxType;
+            document.documentElement.style.setProperty('--current-theme-color', maxType === 'A' ? "#FFEE9A" : (maxType === 'B' ? "#FFBBDA" : "#BAE5FF"));
+            quizOverlay.style.display = 'none'; eggLoadingOverlay.style.display = 'flex';
+            
+            const eggWrapper = document.getElementById('eggWrapper'), cracks = [document.getElementById('crack1'), document.getElementById('crack2'), document.getElementById('crack3'), document.getElementById('crack4'), document.getElementById('crack5')];
+            eggWrapper.classList.remove('egg-broken'); cracks.forEach(c => c.classList.remove('crack-visible'));
+            eggWrapper.classList.add('egg-shaking'); await new Promise(r => setTimeout(r, 1000));
+            
+            for (let crack of cracks) { await new Promise(r => setTimeout(r, 500)); crack.classList.add('crack-visible'); }
+            await new Promise(r => setTimeout(r, 800)); eggWrapper.classList.remove('egg-shaking'); 
+            eggWrapper.classList.add('egg-broken'); await new Promise(r => setTimeout(r, 1500)); 
+            eggLoadingOverlay.style.display = 'none'; showResult(maxType);
+        });
+
+        function updateResultText() {
+            const t = i18nData[currentLang];
+            const data = finalTypeResult === 'A' ? { msg: t.type_a, color: "#3F1000" } : (finalTypeResult === 'B' ? { msg: t.type_b, color: "#962558" } : { msg: t.type_c, color: "#1864AB" });
+            document.getElementById('resultMessageArea').innerHTML = `<p class="font-bold text-base sm:text-lg animate-bounce text-center" style="color:${data.color}">${data.msg}</p>`;
+        }
+
+        function showResult(type) {
+            const findSection = document.getElementById('find');
+            findSection.style.display = 'flex';
+            let data = type === 'A' ? { f: "GOMDOL_F.PNG", b: "GOMDOL_B.PNG", color: "#3F1000", bg: "#FFF7CE" } : (type === 'B' ? { f: "JINDO_F.PNG", b: "JINDO_B.PNG", color: "#962558", bg: "#FFDDED" } : { f: "HORANG_F.PNG", b: "HORANG_B.PNG", color: "#1864AB", bg: "#D8F0FF" });
+            findSection.style.backgroundColor = data.bg; 
+            document.documentElement.style.setProperty('--current-text-color', data.color);
+            document.getElementById('dynamicSaveBtn').style.backgroundColor = data.color; 
+            document.querySelectorAll('.share-icon-btn').forEach(btn => btn.style.color = data.color);
+            
+            const f = document.getElementById('idFrontImg'), b = document.getElementById('idBackImg'); 
+            f.src = data.f; b.src = data.b; 
+            updateResultText(); 
+            setTimeout(() => scrollToSection('find'), 100);
+        }
+
+        function saveCardAsImage() {
+            showMsg(i18nData[currentLang].msg_saving);
+            const backSrc = document.getElementById('idBackImg').getAttribute('src');
+            const filename = backSrc.split('/').pop() || 'Mate_B.PNG';
+            setTimeout(() => { 
+                const link = document.createElement('a'); link.href = backSrc; link.download = filename; link.target = '_blank';
+                document.body.appendChild(link); link.click(); document.body.removeChild(link);
+                showMsg(i18nData[currentLang].msg_success); 
+            }, 400);
+        }
+
+        function shareX() { window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(i18nData[currentLang].doc_title)}&url=${encodeURIComponent(window.location.href)}`, '_blank'); }
+        function shareInstagram() { showMsg(i18nData[currentLang].msg_insta); setTimeout(() => { window.open("https://www.instagram.com/", '_blank'); }, 1500); }
+        function copyLink() { 
+            const dummy = document.createElement('input'); document.body.appendChild(dummy); dummy.value = window.location.href; dummy.select(); document.execCommand('copy'); document.body.removeChild(dummy); 
+            showMsg(i18nData[currentLang].msg_link); 
+        }
+        function showMsg(t) { const b = document.getElementById('msgBox'); document.getElementById('msgContent').innerHTML = t; b.style.display = 'flex'; setTimeout(() => b.style.display = 'none', 3000); }
+    </script>
+</body>
+</html>
